@@ -1,0 +1,28 @@
+{
+  "name": "adAuthoApi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "typescript": "^4.2.3"
+  },
+  "devDependencies": {
+    "@azure/msal-node": "^1.0.1"
+  },
+  "scripts": {
+    "start": "npm run build:live",
+    "build": "tsc -p .",
+    "build:live": "nodemon --watch 'src/**/*.ts' --exec \"ts-node\" src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/appcoreopc/adAuthoApi.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/appcoreopc/adAuthoApi/issues"
+  },
+  "homepage": "https://github.com/appcoreopc/adAuthoApi#readme"
+}
