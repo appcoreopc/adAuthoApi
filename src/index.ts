@@ -1,17 +1,17 @@
 import * as msal from "@azure/msal-node";
 import express from "express";
-import {config} from "./config";
+import { config } from "./config";
 
 const SERVER_PORT = process.env.PORT || 3000;
-const REDIRECT_URI:string = "http://localhost:3000/redirect";
+const REDIRECT_URI: string = "http://localhost:3000/redirect";
 
 // Create msal application object
 const pca = new msal.ConfidentialClientApplication(config);
 
 const app = express();
 
-app.get('/', (req:express.Request, res:express.Response) => {
- 
+app.get('/', (req: express.Request, res: express.Response) => {
+
     const authCodeUrlParameters = {
         scopes: ["user.read"],
         redirectUri: REDIRECT_URI,
@@ -23,24 +23,24 @@ app.get('/', (req:express.Request, res:express.Response) => {
     }).catch((error) => console.log(JSON.stringify(error)));
 });
 
-app.get('/redirect', (req: express.Request, res: express.Response) => {
-    
-    // we have our code from req.query 
-    console.log(req.query.code);
-    
+app.get('/redirect', async (req: express.Request, res: express.Response) => {
+
     const tokenRequest = {
         code: req.query.code as string,
         scopes: ["user.read"],
         redirectUri: REDIRECT_URI,
     };
 
-    pca.acquireTokenByCode(tokenRequest).then((response) => {
-        console.log("\nResponse: \n:", response);
+    try {
+        // this is where we obtain the token from AD //
+        const response = await pca.acquireTokenByCode(tokenRequest);
+        console.log(response);
         res.sendStatus(200);
-    }).catch((error) => {
+
+    } catch (error) {
         console.log(error);
         res.status(500).send(error);
-    });
+    }
 });
 
 app.listen(SERVER_PORT, () => console.log(`Msal Node Auth Code Sample app listening on port ${SERVER_PORT}!`))
