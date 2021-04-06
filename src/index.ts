@@ -25,6 +25,9 @@ app.get('/', (req:express.Request, res:express.Response) => {
 
 app.get('/redirect', (req: express.Request, res: express.Response) => {
     
+    // we have our code from req.query 
+    console.log(req.query.code);
+    
     const tokenRequest = {
         code: req.query.code as string,
         scopes: ["user.read"],
